@@ -64,7 +64,7 @@ int main()
     // все однотонное
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
-            frame.point(i,j)=0x00AAFFAA;
+            frame.point(i,j)=0x00AAFFAA; // 0x00BBGGRR - зеленого немного больше
     gw.write(frame);
 
     // синусоида
@@ -79,11 +79,13 @@ int main()
         for(int j=0;j<size;j++)
         {
             frame.point(i,j).red  ( distribution(generator) );    // заливка красным
-            frame.point(i,j).green( distribution(generator) );  // добавляем немного зеленого
-            frame.point(i,j).blue ( distribution(generator) );   // и синего
+            frame.point(i,j).green( distribution(generator) );    // заливка зеленым
+            frame.point(i,j).blue ( distribution(generator) );    // заливка синим
         }
     gw.write(frame);
 
+
+    // Множество Жюлиа (http://elementy.ru/posters/fractals)
     complex<double> c={-0.2,0.7};
     for(int i=0;i<size;i++)
     {
