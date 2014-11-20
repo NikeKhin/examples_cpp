@@ -36,8 +36,9 @@ private:
 
 class Frame
 {
+    using FrameRow = Pixel(&)[size];
 public:
-    Pixel& point(int row, int col){return arr[row][col];}
+    FrameRow operator[](int idx){return arr[idx];}
     operator void*(){return arr;}
 private:
     Pixel arr[size][size];
@@ -55,21 +56,21 @@ int main()
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
         {
-            frame.point(i,j).red( (i+j)/2 );    // заливка красным
-            frame.point(i,j).green( (i+j)/4 );  // добавляем немного зеленого
-            frame.point(i,j).blue( (i+j)/3 );   // и синего
+            frame[i][j].red( (i+j)/2 );    // заливка красным
+            frame[i][j].green( (i+j)/4 );  // добавляем немного зеленого
+            frame[i][j].blue( (i+j)/3 );   // и синего
         }
     gw.write(frame);
 
     // все однотонное
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
-            frame.point(i,j)=0x00AAFFAA; // 0x00BBGGRR - зеленого немного больше
+            frame[i][j]=0x00AAFFAA; // 0x00BBGGRR - зеленого немного больше
     gw.write(frame);
 
     // синусоида
     for(int i=0;i<size;i++)
-        frame.point( size/2+int(size/4*sin(0.1*i)), i) = 0;
+        frame[size/2+int(size/4*sin(0.1*i))][i] = 0;
     gw.write(frame);
 
     // случайная заливка
@@ -78,9 +79,9 @@ int main()
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
         {
-            frame.point(i,j).red  ( distribution(generator) );    // заливка красным
-            frame.point(i,j).green( distribution(generator) );    // заливка зеленым
-            frame.point(i,j).blue ( distribution(generator) );    // заливка синим
+            frame[i][j].red  ( distribution(generator) );    // заливка красным
+            frame[i][j].green( distribution(generator) );    // заливка зеленым
+            frame[i][j].blue ( distribution(generator) );    // заливка синим
         }
     gw.write(frame);
 
@@ -91,7 +92,7 @@ int main()
     {
         for(int j=0;j<size;j++)
         {
-            frame.point(i,j) = 0;
+            frame[i][j] = 0;
             complex<double> x ={static_cast<double>(j)/size-0.5, static_cast<double>(i)/size-0.5};
             x *= 3;
             for(int n=0; n<20; n++)
@@ -99,7 +100,7 @@ int main()
                 x = x*x+c;
                 if(std::abs(x) > 10.0 )
                 {
-                    frame.point(i,j) = n*255/20;
+                    frame[i][j] = n*255/20;
                     break;
                 }
             }
