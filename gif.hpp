@@ -728,7 +728,7 @@ void GifWriteLzwImage(FILE* f, uint8_t* image, uint32_t left, uint32_t top,  uin
 class GifWriter
 {
 public:
-    GifWriter(std::string filename, uint32_t width, uint32_t height);
+    GifWriter(std::string filename, uint32_t width, uint32_t height, uint32_t delay=1000);
     ~GifWriter();
 
     bool write(void* image);
@@ -757,12 +757,12 @@ private:
 
     const uint32_t _width;
     const uint32_t _height;
-    uint32_t _delay=100;
+    uint32_t _delay=1000;
     int32_t _bitDepth = 8;
     bool _dither = false;
 };
 
-GifWriter::GifWriter(std::string filename, uint32_t width, uint32_t height):_width{width},_height{height}
+GifWriter::GifWriter(std::string filename, uint32_t width, uint32_t height, uint32_t delay):_width{width},_height{height},_delay{delay}
 {
     GifBegin(filename.c_str(),_width,_height);
 }
@@ -772,7 +772,7 @@ GifWriter::~GifWriter()
 }
 bool GifWriter::write(void* image)
 {
-    return GifWriteFrame( (const uint8_t*) image, _width, _height);
+    return GifWriteFrame( (const uint8_t*) image, _width, _height, _delay/10);
 }
 
 // Creates a gif file.
