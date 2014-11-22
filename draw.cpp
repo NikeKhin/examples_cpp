@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const int size = 256;
+const int size = 512;
 
 class Pixel
 {
@@ -51,7 +51,7 @@ int main()
 
     // создание объекта (gif-файла) с заданным именем и размерами
     GifWriter gw("checking.gif",size,size);
-
+/*
     // диагональный градиент
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
@@ -60,18 +60,18 @@ int main()
             frame[i][j].green( (i+j)/4 );  // добавляем немного зеленого
             frame[i][j].blue( (i+j)/3 );   // и синего
         }
-    gw.write(frame);
+    //gw.write(frame);
 
     // все однотонное
     for(int i=0;i<size;i++)
         for(int j=0;j<size;j++)
             frame[i][j]=0x00AAFFAA; // 0x00BBGGRR - зеленого немного больше
-    gw.write(frame);
+    //gw.write(frame);
 
     // синусоида
     for(int i=0;i<size;i++)
         frame[size/2+int(size/4*sin(0.1*i))][i] = 0;
-    gw.write(frame);
+    //gw.write(frame);
 
     // случайная заливка
     std::default_random_engine generator;
@@ -83,24 +83,26 @@ int main()
             frame[i][j].green( distribution(generator) );    // заливка зеленым
             frame[i][j].blue ( distribution(generator) );    // заливка синим
         }
-    gw.write(frame);
-
+    //gw.write(frame);
+*/
 
     // Множество Жюлиа (http://elementy.ru/posters/fractals)
     complex<double> c={-0.2,0.7};
-    for(int i=0;i<size;i++)
+    for(int i=0;i<size;i++) // по строчкам
     {
-        for(int j=0;j<size;j++)
+        for(int j=0;j<size;j++) // по столбцам
         {
             frame[i][j] = 0;
             complex<double> x ={static_cast<double>(j)/size-0.5, static_cast<double>(i)/size-0.5};
             x *= 3;
-            for(int n=0; n<20; n++)
+            for(int n=0; n<200; n++)
             {
-                x = x*x+c;
+                x = x*x+c; // итерации x[k+1]=x[k]*x[k]+c;
                 if(std::abs(x) > 10.0 )
                 {
-                    frame[i][j] = n*255/20;
+                    frame[i][j].red(n*255/20);
+                    frame[i][j].green(n*255/20);
+                    frame[i][j].blue(n*255/20);
                     break;
                 }
             }
