@@ -54,50 +54,60 @@ private:
     Pixel arr[size][size];
 };
 
+class Shape
+{
+    int x1,y1, x2,y2;
+public:
+    Shape(int xx1,int yy1,int xx2,int yy2)
+    {
+        x1 = xx1;
+        y1 = yy1;
+        x2 = xx2;
+        y2 = yy2;
+    }
+    void paint(Frame[32][32] f){
+        for(int y=y1; y<=y2; y++) // по строчкам
+            for(int x=x1; x<=x2; x++) // по столбцам
+            {
+                double w = x2-x1;
+                double h = y2-y1;
+                if( (x-x1)/w + (y-y1)/h < 1.0 )
+                    f[y][x].red(255);
+
+            }
+
+    }
+};
+
+
 int main()
 {
     // Массив пикселей
     Frame frame;
+    for(int i=0; i<size; i++) // по строчкам
+        for(int j=0; j<size; j++) // по столбцам
+            frame[i][j] = 0;
 
     // создание объекта (gif-файла) с заданным именем и размерами
     GifWriter gw("checking.gif",size,size,250);
-    /*
-        // диагональный градиент
-        for(int i=0;i<size;i++)
-            for(int j=0;j<size;j++)
-            {
-                frame[i][j].red( (i+j)/2 );    // заливка красным
-                frame[i][j].green( (i+j)/4 );  // добавляем немного зеленого
-                frame[i][j].blue( (i+j)/3 );   // и синего
-            }
-        //gw.write(frame);
 
-        // все однотонное
-        for(int i=0;i<size;i++)
-            for(int j=0;j<size;j++)
-                frame[i][j]=0x00AAFFAA; // 0x00BBGGRR - зеленого немного больше
-        //gw.write(frame);
+    Shape t(20,20, 100, 60);
+    t.paint(frame);
+/*
+    for(int i=237; i<300; i++) // по строчкам
+        for(int j=237; j<300; j++) // по столбцам
+            frame[i][j].red(255), frame[i][j].blue(255);
+*/
 
-        // синусоида
-        for(int i=0;i<size;i++)
-            frame[size/2+int(size/4*sin(0.1*i))][i] = 0;
-        //gw.write(frame);
+    gw.write(frame);
 
-        // случайная заливка
-        std::default_random_engine generator;
-        std::normal_distribution<double> distribution(0.0, 0.5); // нормальное распределение со средним 127 и СКО 32
-        for(int i=0;i<size;i++)
-            for(int j=0;j<size;j++)
-            {
-                frame[i][j].red  ( distribution(generator) );    // заливка красным
-                frame[i][j].green( distribution(generator) );    // заливка зеленым
-                frame[i][j].blue ( distribution(generator) );    // заливка синим
-            }
-        //gw.write(frame);
-    */
 
+
+/*
+ многострочный комментарий
+*/
+/*
     // Множество Жюлиа (http://elementy.ru/posters/fractals)
-
     for(int cc=-10; cc<=10; cc++)
     {
         cout << "current step=" << cc << endl;
@@ -122,9 +132,9 @@ int main()
                 }
             }
         }
-        gw.write(frame);
+        //gw.write(frame);
     }
-
+*/
 
     return 0;
 }
