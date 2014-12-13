@@ -65,7 +65,7 @@ public:
         x2 = xx2;
         y2 = yy2;
     }
-    void paint(Frame f){
+    void paint(Frame &f){
         for(int y=y1; y<=y2; y++) // по строчкам
             for(int x=x1; x<=x2; x++) // по столбцам
             {
