@@ -29,10 +29,11 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="tic-tac-toe.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
